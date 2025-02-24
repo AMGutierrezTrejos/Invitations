@@ -2,7 +2,7 @@
 import { BlurView } from 'expo-blur';
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInUp, FadeOut, SlideInUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const events = [
@@ -40,6 +40,8 @@ const events = [
   },
 ];
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export default function WelcomeScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -60,8 +62,10 @@ export default function WelcomeScreen() {
       <View className="absolute left-0 top-0 bg-black/70" />
 
       <BlurView intensity={50}>
-        <SafeAreaView>
-          <View className="h-3/5 w-full ">
+        <SafeAreaView edges={['bottom']}>
+          <Animated.View
+            className="mt-20 h-3/5 w-full"
+            entering={SlideInUp.springify().mass(1).damping(30)}>
             <ScrollView horizontal>
               {events.map((event) => (
                 <View className="h-full w-96 p-5 shadow-md">
@@ -69,18 +73,29 @@ export default function WelcomeScreen() {
                 </View>
               ))}
             </ScrollView>
-          </View>
+          </Animated.View>
           <View className="flex-1 justify-center gap-4 p-4">
-            <Text className="text-center text-2xl font-bold text-white/80">Welcome to</Text>
-            <Text className="text-center text-5xl font-bold text-white">AMGT Invites</Text>
-            <Text className="mb-5 text-center text-lg text-white/80">
+            <Animated.Text
+              className="text-center text-2xl font-bold text-white/80"
+              entering={FadeInUp.springify().mass(1).damping(30).delay(500)}>
+              Welcome to
+            </Animated.Text>
+            <Animated.Text
+              className="text-center text-5xl font-bold text-white"
+              entering={FadeIn.duration(500).delay(500)}>
+              AMGT Invites
+            </Animated.Text>
+            <Animated.Text
+              className="mb-5 text-center text-lg text-white/80"
+              entering={FadeInUp.springify().mass(1).damping(30).delay(500)}>
               Create beautiful invitations for your events. Anyone can receive invitations.{' '}
-            </Text>
-            <Pressable
+            </Animated.Text>
+            <AnimatedPressable
               onPress={onButtonPress}
-              className=" items-center self-center rounded-full bg-white px-10 py-4">
+              className=" items-center self-center rounded-full bg-white px-10 py-4"
+              entering={FadeInUp.springify().mass(1).damping(30)}>
               <Text className="text-lg ">Create an Event</Text>
-            </Pressable>
+            </AnimatedPressable>
           </View>
         </SafeAreaView>
       </BlurView>
