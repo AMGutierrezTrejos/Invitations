@@ -5,6 +5,8 @@ import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInUp, FadeOut, SlideInUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Marquee from '~/components/Marquee';
+
 const events = [
   {
     id: 1,
@@ -66,13 +68,7 @@ export default function WelcomeScreen() {
           <Animated.View
             className="mt-20 h-3/5 w-full"
             entering={SlideInUp.springify().mass(1).damping(30)}>
-            <ScrollView horizontal>
-              {events.map((event) => (
-                <View className="h-full w-96 p-5 shadow-md">
-                  <Image source={event.image} className="h-full w-full rounded-3xl" />
-                </View>
-              ))}
-            </ScrollView>
+            <Marquee events={events} />
           </Animated.View>
           <View className="flex-1 justify-center gap-4 p-4">
             <Animated.Text
