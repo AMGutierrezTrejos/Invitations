@@ -63,12 +63,23 @@ export default function WelcomeScreen() {
       />
       <View className="absolute left-0 top-0 bg-black/70" />
 
-      <BlurView intensity={50}>
+      <BlurView intensity={70}>
         <SafeAreaView edges={['bottom']}>
           <Animated.View
             className="mt-20 h-1/2 w-full"
             entering={SlideInUp.springify().mass(1).damping(30)}>
-            <Marquee events={events} />
+            <Marquee
+              items={events}
+              onIndexChange={setActiveIndex}
+              renderItem={({ item }) => (
+                <View className=" h-full w-full justify-end">
+                  <Image source={item.image} className="absolute h-full w-full rounded-3xl" />
+                  <View className="absolute bottom-0 h-24 w-full justify-center bg-black/70">
+                    <Text className="text=2xl text-center text-white">Party</Text>
+                  </View>
+                </View>
+              )}
+            />
           </Animated.View>
           <View className="flex-1 justify-center gap-4 p-4">
             <Animated.Text
