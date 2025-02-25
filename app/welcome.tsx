@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, Text, View, StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeInUp, FadeOut, SlideInUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import EventCard from '~/components/EventCard';
 
 import Marquee from '~/components/Marquee';
 
@@ -70,15 +72,8 @@ export default function WelcomeScreen() {
             entering={SlideInUp.springify().mass(1).damping(30)}>
             <Marquee
               items={events}
+              renderItem={({ item }) => <EventCard event={item} />}
               onIndexChange={setActiveIndex}
-              renderItem={({ item }) => (
-                <View className=" h-full w-full justify-end">
-                  <Image source={item.image} className="absolute h-full w-full rounded-3xl" />
-                  <View className="absolute bottom-0 h-24 w-full justify-center bg-black/70">
-                    <Text className="text=2xl text-center text-white">Party</Text>
-                  </View>
-                </View>
-              )}
             />
           </Animated.View>
           <View className="flex-1 justify-center gap-4 p-4">

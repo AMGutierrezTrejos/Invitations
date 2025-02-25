@@ -1,17 +1,17 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState, PropsWithChildren } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { View, useWindowDimensions, Text } from 'react-native';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
-  Easing,
-  interpolate,
-  runOnJS,
   SharedValue,
-  useAnimatedReaction,
   useAnimatedStyle,
   useFrameCallback,
   useSharedValue,
   withTiming,
+  Easing,
+  interpolate,
+  useAnimatedReaction,
+  runOnJS,
 } from 'react-native-reanimated';
 
 type MarqueeItemProps = {
@@ -29,11 +29,15 @@ function MarqueeItem({
   children,
 }: PropsWithChildren<MarqueeItemProps>) {
   const { width: screenWidth } = useWindowDimensions();
+
   const shift = (containerWidth - screenWidth) / 2;
+
   const initialPosition = itemWidth * index - shift;
+
   const animatedStyle = useAnimatedStyle(() => {
     const position = ((initialPosition - scroll.value) % containerWidth) + shift;
-    const rotation = interpolate(position, [0, screenWidth - itemWidth], [-1.5, 1.5]);
+
+    const rotation = interpolate(position, [0, screenWidth - itemWidth], [-1, 1]);
     const translateY = interpolate(
       position,
       [0, (screenWidth - itemWidth) / 2, screenWidth - itemWidth],
@@ -48,7 +52,7 @@ function MarqueeItem({
 
   return (
     <Animated.View
-      className="absolute h-full p-3 shadow-md"
+      className="absolute h-full p-2 shadow-md"
       style={[{ width: itemWidth, transformOrigin: 'bottom' }, animatedStyle]}>
       {children}
     </Animated.View>
@@ -61,13 +65,15 @@ export default function Marquee({
   renderItem,
 }: {
   items: any[];
-  onIndexChange: (index: number) => void;
+  onIndexChange?: (index: number) => void;
   renderItem: ({ item, index }: { item: any; index: number }) => React.ReactNode;
 }) {
   const scroll = useSharedValue(0);
-  const scrollSpeed = useSharedValue(50);
+  const scrollSpeed = useSharedValue(50); // pixels per second
   const { width: screenWidth } = useWindowDimensions();
+
   const [activeIndex, setActiveIndex] = useState(0);
+
   const itemWidth = screenWidth * 0.65;
 
   const containerWidth = items.length * itemWidth;
@@ -90,6 +96,7 @@ export default function Marquee({
 
   useFrameCallback((frameInfo) => {
     const deltaSeconds = (frameInfo.timeSincePreviousFrame ?? 0) / 1000;
+
     scroll.value = scroll.value + scrollSpeed.value * deltaSeconds;
   });
 
@@ -98,7 +105,7 @@ export default function Marquee({
       scrollSpeed.value = 0;
     })
     .onChange((event) => {
-      scroll.value = scroll.value + event.changeX;
+      scroll.value = scroll.value - event.changeX;
     })
     .onFinalize((event) => {
       scrollSpeed.value = -event.velocityX;
