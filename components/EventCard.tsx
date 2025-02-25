@@ -14,7 +14,7 @@ export default function EventCard({ event }: { event: any }) {
           style={StyleSheet.absoluteFill}
         />
 
-        <Text className="text-center text-2xl text-white">Birthday Part</Text>
+        <Text className="text-center text-2xl text-white">Birthday Party</Text>
       </BlurView>
     </View>
   );

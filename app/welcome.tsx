@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { useState } from 'react';
-import { Image, Pressable, Text, View, StyleSheet } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInUp, FadeOut, SlideInUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import EventCard from '~/components/EventCard';
 
+import EventCard from '~/components/EventCard';
 import Marquee from '~/components/Marquee';
 
 const events = [
@@ -50,7 +50,7 @@ export default function WelcomeScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onButtonPress = () => {
-    setActiveIndex(activeIndex >= events.length - 1 ? 0 : activeIndex + 1);
+    router.push('/create');
   };
 
   return (

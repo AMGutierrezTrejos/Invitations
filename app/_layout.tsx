@@ -11,6 +11,10 @@ export default function Layout() {
           name="welcome"
           options={{ headerShown: false, presentation: 'fullScreenModal' }}
         />
+        <Stack.Screen
+          name="create"
+          options={{ headerShown: false, presentation: 'fullScreenModal' }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );
