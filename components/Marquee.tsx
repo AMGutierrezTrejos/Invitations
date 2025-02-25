@@ -3,6 +3,7 @@ import { Image, useWindowDimensions, View } from 'react-native';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
+  interpolate,
   SharedValue,
   useAnimatedStyle,
   useFrameCallback,
@@ -24,16 +25,23 @@ function MarqueeItem({ event, index, scroll, containerWidth, itemWidth }: Marque
   const initialPosition = itemWidth * index - shift;
   const animatedStyle = useAnimatedStyle(() => {
     const position = ((initialPosition - scroll.value) % containerWidth) + shift;
+    const rotation = interpolate(position, [0, screenWidth - itemWidth], [-1.5, 1.5]);
+    const translateY = interpolate(
+      position,
+      [0, (screenWidth - itemWidth) / 2, screenWidth - itemWidth],
+      [3, 0, 3]
+    );
 
     return {
       left: position,
+      transform: [{ rotateZ: `${rotation}deg` }, { translateY }],
     };
   });
 
   return (
     <Animated.View
-      className="absolute h-full  p-3 shadow-md"
-      style={[{ width: itemWidth }, animatedStyle]}>
+      className="absolute h-full p-3 shadow-md"
+      style={[{ width: itemWidth, transformOrigin: 'bottom' }, animatedStyle]}>
       <Image source={event.image} className="h-full w-full rounded-3xl" />
     </Animated.View>
   );

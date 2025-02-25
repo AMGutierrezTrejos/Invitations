@@ -66,7 +66,7 @@ export default function WelcomeScreen() {
       <BlurView intensity={50}>
         <SafeAreaView edges={['bottom']}>
           <Animated.View
-            className="mt-20 h-3/5 w-full"
+            className="mt-20 h-1/2 w-full"
             entering={SlideInUp.springify().mass(1).damping(30)}>
             <Marquee events={events} />
           </Animated.View>
