@@ -7,6 +7,8 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+
 const itemWidth = 250;
 
 type MarqueeItemProps = { event: any; index: number; scroll: SharedValue<number> };
@@ -31,17 +33,31 @@ function MarqueeItem({ event, index, scroll }: MarqueeItemProps) {
 
 export default function Marquee({ events }: { events: any[] }) {
   const scroll = useSharedValue(0);
-  const scrollSpeed = 1;
+  const scrollSpeed = useSharedValue(50);
 
-  useFrameCallback(() => {
-    scroll.value = scroll.value + scrollSpeed;
+  useFrameCallback((frameInfo) => {
+    const deltaSeconds = (frameInfo.timeSincePreviousFrame ?? 0) / 1000;
+    scroll.value = scroll.value + scrollSpeed.value * deltaSeconds;
   });
 
+  const gesture = Gesture.Pan()
+    .onBegin((event) => {
+      scrollSpeed.value = 0;
+    })
+    .onChange((event) => {
+      scroll.value = scroll.value + event.changeX;
+    })
+    .onFinalize((event) => {
+      scrollSpeed.value = 50;
+    });
+
   return (
-    <View className="h-full flex-row">
-      {events.map((event, index) => (
-        <MarqueeItem key={event.id} event={event} index={index} scroll={scroll} />
-      ))}
-    </View>
+    <GestureDetector gesture={gesture}>
+      <View className="h-full flex-row">
+        {events.map((event, index) => (
+          <MarqueeItem key={event.id} event={event} index={index} scroll={scroll} />
+        ))}
+      </View>
+    </GestureDetector>
   );
 }
