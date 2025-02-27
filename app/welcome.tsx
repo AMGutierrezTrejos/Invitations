@@ -13,34 +13,42 @@ const events = [
   {
     id: 1,
     image: require('../assets/images/1.jpg'),
+    title: 'Birthday Party',
   },
   {
     id: 2,
     image: require('../assets/images/2.jpg'),
+    title: 'wedding Party',
   },
   {
     id: 3,
     image: require('../assets/images/3.jpg'),
+    title: 'Disco Party',
   },
   {
     id: 4,
     image: require('../assets/images/4.jpg'),
+    title: 'Love Party',
   },
   {
     id: 5,
     image: require('../assets/images/5.jpg'),
+    title: 'Pool Party',
   },
   {
     id: 6,
     image: require('../assets/images/6.jpg'),
+    title: 'Traditional Party',
   },
   {
     id: 7,
     image: require('../assets/images/7.jpg'),
+    title: 'Dessert Party',
   },
   {
     id: 8,
     image: require('../assets/images/8.jpg'),
+    title: 'Concert Party',
   },
 ];
 
@@ -54,7 +62,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View className="flex-1 items-center bg-yellow-950">
+    <View className="flex-1  bg-yellow-950">
       <Animated.Image
         key={events[activeIndex].image}
         source={events[activeIndex].image}
@@ -63,10 +71,10 @@ export default function WelcomeScreen() {
         entering={FadeIn.duration(1000)}
         exiting={FadeOut.duration(1000)}
       />
-      <View className="absolute left-0 top-0 bg-black/70" />
+          <View className="absolute left-0 top-0 h-full w-full bg-black/70" />
 
-      <BlurView intensity={70}>
-        <SafeAreaView edges={['bottom']}>
+      <BlurView intensity={70} className="flex-1">
+        <SafeAreaView edges={['bottom']} className="flex-1">
           <Animated.View
             className="mt-20 h-1/2 w-full"
             entering={SlideInUp.springify().mass(1).damping(30)}>
@@ -78,7 +86,7 @@ export default function WelcomeScreen() {
           </Animated.View>
           <View className="flex-1 justify-center gap-4 p-4">
             <Animated.Text
-              className="text-center text-2xl font-bold text-white/80"
+              className="text-center text-2xl font-bold text-white/60"
               entering={FadeInUp.springify().mass(1).damping(30).delay(500)}>
               Welcome to
             </Animated.Text>
@@ -88,7 +96,7 @@ export default function WelcomeScreen() {
               AMGT Invites
             </Animated.Text>
             <Animated.Text
-              className="mb-5 text-center text-lg text-white/80"
+              className="mb-5 text-center text-lg text-white/60"
               entering={FadeInUp.springify().mass(1).damping(30).delay(500)}>
               Create beautiful invitations for your events. Anyone can receive invitations.{' '}
             </Animated.Text>
